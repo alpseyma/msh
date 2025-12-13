@@ -1,15 +1,18 @@
 #include <iostream>
 #include "Logger.h"
 #include "StateManager.h"
+#include "ModeManager.h"
 
 int main() {
     Logger::instance().info("MSH system started");
-    Logger::instance().warning("This is a test warning");
-    Logger::instance().error("This is a test error");
-    StateManager::instance().setState("HOME");
-    StateManager::instance().setState("AWAY");
+
+    ModeManager::instance().setMode(MODE_HOME);
+    ModeManager::instance().setMode(MODE_AWAY);
+    ModeManager::instance().setMode(MODE_NIGHT);
+    ModeManager::instance().setMode(MODE_EMERGENCY);
+
     StateManager::instance().restoreLastState();
 
+    Logger::instance().info("MSH system shutdown");
     return 0;
 }
-
