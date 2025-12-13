@@ -13,10 +13,10 @@ void DetectionManager::setChain(Detector* first) {
     Logger::instance().info("Detection chain configured");
 }
 
-void DetectionManager::process() {
+bool DetectionManager::process() {
     if (m_chain) {
-        m_chain->handle();
-    } else {
-        Logger::instance().warning("Detection chain is empty");
+        return m_chain->handle();
     }
+    Logger::instance().warning("Detection chain is empty");
+    return false;
 }

@@ -8,7 +8,7 @@ public:
     static DetectionManager& instance();
 
     void setChain(Detector* first);
-    void process();
+    bool process();
 
 private:
     DetectionManager();

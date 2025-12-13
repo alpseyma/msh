@@ -7,7 +7,7 @@ public:
     virtual ~Detector();
 
     void setNext(Detector* next);
-    void handle();
+    bool handle();
 
 protected:
     virtual bool detect() = 0;
@@ -17,3 +17,4 @@ private:
 };
 
 #endif
+

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Logger.h"
 #include "StateManager.h"
 #include "ModeManager.h"
@@ -11,13 +10,16 @@
 int main() {
     Logger::instance().info("MSH system started");
 
+    // Mode test
     ModeManager::instance().setMode(MODE_HOME);
     ModeManager::instance().setMode(MODE_AWAY);
     ModeManager::instance().setMode(MODE_NIGHT);
     ModeManager::instance().setMode(MODE_EMERGENCY);
 
+    // State undo test
     StateManager::instance().restoreLastState();
 
+    // Device test
     LightDevice light1("LivingRoomLight");
     LightDevice light2("KitchenLight");
 
@@ -26,14 +28,16 @@ int main() {
 
     DeviceManager::instance().turnOnAll();
     DeviceManager::instance().turnOffAll();
-    Logger::instance().info("MSH system shutdown");
+
+    // Detection test
     MotionDetector motion;
     SmokeDetector smoke;
-
     motion.setNext(&smoke);
 
     DetectionManager::instance().setChain(&motion);
     DetectionManager::instance().process();
 
+    Logger::instance().info("MSH system shutdown");
     return 0;
 }
+

@@ -7,8 +7,13 @@ void Detector::setNext(Detector* next) {
     m_next = next;
 }
 
-void Detector::handle() {
-    if (!detect() && m_next) {
-        m_next->handle();
+bool Detector::handle() {
+    if (detect()) {
+        return true;
     }
+    if (m_next) {
+        return m_next->handle();
+    }
+    return false;
 }
+
