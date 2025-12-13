@@ -8,8 +8,10 @@ StateManager& StateManager::instance() {
     return instance;
 }
 
-void StateManager::setState(const std::string& stateName) {
-    saveState();
+void StateManager::setState(const std::string& stateName, bool saveSnapshot) {
+    if (saveSnapshot) {
+        saveState();
+    }
     m_state.setState(stateName);
     Logger::instance().info("State changed to: " + stateName);
 }
@@ -33,3 +35,4 @@ void StateManager::restoreLastState() {
     m_state.restore(snapshot);
     Logger::instance().info("State restored to: " + snapshot.getStateName());
 }
+

@@ -6,36 +6,36 @@
 #include "DetectionManager.h"
 #include "MotionDetector.h"
 #include "SmokeDetector.h"
+#include "SecurityManager.h"
 
 int main() {
     Logger::instance().info("MSH system started");
 
-    // Mode test
+    // Normal mode test (EMERGENCY'yi Security tetiklesin)
     ModeManager::instance().setMode(MODE_HOME);
     ModeManager::instance().setMode(MODE_AWAY);
     ModeManager::instance().setMode(MODE_NIGHT);
-    ModeManager::instance().setMode(MODE_EMERGENCY);
-
-    // State undo test
-    StateManager::instance().restoreLastState();
 
     // Device test
     LightDevice light1("LivingRoomLight");
     LightDevice light2("KitchenLight");
-
     DeviceManager::instance().addDevice(&light1);
     DeviceManager::instance().addDevice(&light2);
-
     DeviceManager::instance().turnOnAll();
     DeviceManager::instance().turnOffAll();
 
-    // Detection test
+    // Detection chain
     MotionDetector motion;
     SmokeDetector smoke;
     motion.setNext(&smoke);
-
     DetectionManager::instance().setChain(&motion);
-    DetectionManager::instance().process();
+
+    // Security should trigger EMERGENCY based on detection
+    SecurityManager::instance().arm();
+    SecurityManager::instance().runOnce();
+
+    // Optional: try to restore (EMERGENCY should be non-revertible if you implemented saveSnapshot=false)
+    StateManager::instance().restoreLastState();
 
     Logger::instance().info("MSH system shutdown");
     return 0;

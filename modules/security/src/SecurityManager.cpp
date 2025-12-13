@@ -2,6 +2,8 @@
 #include "DetectionManager.h"
 #include "StateManager.h"
 #include "Logger.h"
+#include "ModeManager.h"
+
 
 SecurityManager::SecurityManager() : m_armed(false) {}
 
@@ -33,10 +35,10 @@ void SecurityManager::runOnce() {
     bool detected = DetectionManager::instance().process();
 
     if (detected) {
-        Logger::instance().warning("Security alert: detection event received");
-        // Basit aksiyon: state'i EMERGENCY yap
-        StateManager::instance().setState("EMERGENCY");
+        Logger::instance().warning("Security alert: switching to EMERGENCY mode");
+        ModeManager::instance().setMode(MODE_EMERGENCY);
     } else {
         Logger::instance().info("Security check: no threat detected");
     }
 }
+

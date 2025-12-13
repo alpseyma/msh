@@ -30,7 +30,7 @@ void ModeManager::setMode(SystemMode mode) {
             break;
 
         case MODE_EMERGENCY:
-            StateManager::instance().setState("EMERGENCY");
+            StateManager::instance().setState("EMERGENCY", false);
             Logger::instance().warning("Mode changed to EMERGENCY");
             break;
     }
