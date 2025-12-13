@@ -4,6 +4,9 @@
 #include "ModeManager.h"
 #include "DeviceManager.h"
 #include "LightDevice.h"
+#include "DetectionManager.h"
+#include "MotionDetector.h"
+#include "SmokeDetector.h"
 
 int main() {
     Logger::instance().info("MSH system started");
@@ -24,5 +27,13 @@ int main() {
     DeviceManager::instance().turnOnAll();
     DeviceManager::instance().turnOffAll();
     Logger::instance().info("MSH system shutdown");
+    MotionDetector motion;
+    SmokeDetector smoke;
+
+    motion.setNext(&smoke);
+
+    DetectionManager::instance().setChain(&motion);
+    DetectionManager::instance().process();
+
     return 0;
 }
