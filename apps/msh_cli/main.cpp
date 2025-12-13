@@ -2,6 +2,8 @@
 #include "Logger.h"
 #include "StateManager.h"
 #include "ModeManager.h"
+#include "DeviceManager.h"
+#include "LightDevice.h"
 
 int main() {
     Logger::instance().info("MSH system started");
@@ -13,6 +15,14 @@ int main() {
 
     StateManager::instance().restoreLastState();
 
+    LightDevice light1("LivingRoomLight");
+    LightDevice light2("KitchenLight");
+
+    DeviceManager::instance().addDevice(&light1);
+    DeviceManager::instance().addDevice(&light2);
+
+    DeviceManager::instance().turnOnAll();
+    DeviceManager::instance().turnOffAll();
     Logger::instance().info("MSH system shutdown");
     return 0;
 }
