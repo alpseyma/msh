@@ -1,41 +1,59 @@
 #include "Logger.h"
-#include "StateManager.h"
-#include "ModeManager.h"
+
+#include "Menu.h"
+#include "SetModeCommand.h"
+#include "TurnOnDevicesCommand.h"
+#include "TurnOffDevicesCommand.h"
+#include "ArmSecurityCommand.h"
+
 #include "DeviceManager.h"
 #include "LightDevice.h"
-#include "DetectionManager.h"
-#include "MotionDetector.h"
-#include "SmokeDetector.h"
-#include "SecurityManager.h"
+
+#include <iostream>
 
 int main() {
     Logger::instance().info("MSH system started");
 
-    // Normal mode test (EMERGENCY'yi Security tetiklesin)
-    ModeManager::instance().setMode(MODE_HOME);
-    ModeManager::instance().setMode(MODE_AWAY);
-    ModeManager::instance().setMode(MODE_NIGHT);
-
-    // Device test
+    // Demo devices (so ON/OFF commands do something)
     LightDevice light1("LivingRoomLight");
     LightDevice light2("KitchenLight");
     DeviceManager::instance().addDevice(&light1);
     DeviceManager::instance().addDevice(&light2);
-    DeviceManager::instance().turnOnAll();
-    DeviceManager::instance().turnOffAll();
 
-    // Detection chain
-    MotionDetector motion;
-    SmokeDetector smoke;
-    motion.setNext(&smoke);
-    DetectionManager::instance().setChain(&motion);
+    Menu menu;
 
-    // Security should trigger EMERGENCY based on detection
-    SecurityManager::instance().arm();
-    SecurityManager::instance().runOnce();
+    SetModeCommand cmdHome(MODE_HOME);
+    SetModeCommand cmdAway(MODE_AWAY);
+    SetModeCommand cmdNight(MODE_NIGHT);
 
-    // Optional: try to restore (EMERGENCY should be non-revertible if you implemented saveSnapshot=false)
-    StateManager::instance().restoreLastState();
+    TurnOnDevicesCommand cmdOn;
+    TurnOffDevicesCommand cmdOff;
+
+    ArmSecurityCommand cmdArm;
+
+    menu.addCommand(1, &cmdHome);
+    menu.addCommand(2, &cmdAway);
+    menu.addCommand(3, &cmdNight);
+    menu.addCommand(4, &cmdOn);
+    menu.addCommand(5, &cmdOff);
+    menu.addCommand(6, &cmdArm);
+
+    int choice = 0;
+    while (choice != -1) {
+        std::cout << "1) Set Mode: HOME\n";
+        std::cout << "2) Set Mode: AWAY\n";
+        std::cout << "3) Set Mode: NIGHT\n";
+        std::cout << "4) Turn ON all devices\n";
+        std::cout << "5) Turn OFF all devices\n";
+        std::cout << "6) Arm security\n";
+        std::cout << "-1) Exit\n";
+        std::cout << "Select: ";
+
+        std::cin >> choice;
+        if (choice != -1) {
+            menu.handleInput(choice);
+        }
+    }
 
     Logger::instance().info("MSH system shutdown");
     return 0;
