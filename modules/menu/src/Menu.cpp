@@ -3,22 +3,22 @@
 #include "Logger.h"
 #include <iostream>
 
-void Menu::addCommand(int option, Command* command) {
-    m_commands[option] = command;
+void Menu::addCommand(int option, const std::string& label, Command* command) {
+    m_items[option] = MenuItem{label, command};
 }
 
 void Menu::show() const {
-    Logger::instance().info("Menu:");
-    for (std::map<int, Command*>::const_iterator it = m_commands.begin();
-         it != m_commands.end(); ++it) {
-        std::cout << it->first << ". Command" << std::endl;
+    for (std::map<int, MenuItem>::const_iterator it = m_items.begin();
+         it != m_items.end(); ++it) {
+        std::cout << it->first << ") " << it->second.label << std::endl;
     }
 }
 
 void Menu::handleInput(int option) {
-    if (m_commands.count(option)) {
-        m_commands[option]->execute();
+    if (m_items.count(option)) {
+        m_items.at(option).command->execute();
     } else {
         Logger::instance().warning("Invalid menu option");
     }
 }
+

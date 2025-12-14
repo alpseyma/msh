@@ -4,6 +4,9 @@ add_library(menu STATIC
     src/TurnOnDevicesCommand.cpp
     src/TurnOffDevicesCommand.cpp
     src/ArmSecurityCommand.cpp
+    src/DisarmSecurityCommand.cpp
+    src/RunSecurityCheckCommand.cpp
+    src/SecurityStatusCommand.cpp
 )
 
 target_include_directories(menu PUBLIC
