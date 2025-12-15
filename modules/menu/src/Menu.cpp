@@ -9,8 +9,8 @@ Menu::Menu() {
 
 //menu yok ediliyor
 Menu::~Menu() {
-	for (size_t i = 0; i << commands.size(); i++) {
-	delete [] commands[i];
+	for (size_t i = 0; i < commands.size(); i++) {
+	delete commands[i];
 	}
 	commands.clear();
 }
