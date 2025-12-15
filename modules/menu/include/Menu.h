@@ -1,25 +1,39 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <map>
+#include <vector>
 #include <string>
-
-class Command;
+#include "Command.h"
 
 class Menu {
-public:
-    void addCommand(int option, const std::string& label, Command* command);
-    void show() const;
-    void handleInput(int option);
-
 private:
-    struct MenuItem {
-        std::string label;
-        Command* command;
-    };
+	//Command sınıfında türediği ve polymorphism kullanıldığı için
+	//pointer ile farklı sınıflardan türeyen nesnelerin yerine
+	//Command* konulacak
+	//dynamic array kullanıyoruz denebilir
+	//pointer olmasa hem abstract olduğu için sınıfı oluşturulamaz
+	//hemde alt sınıfın özelliği kaybolurdu
+	std::vector<Command*> commands;
 
-    std::map<int, MenuItem> m_items;
+public:
+	Menu();
+	~Menu();
+
+	//menüye yeni komut eklemek için fonksiyon
+	//daha dinamiklik sağlıyor
+	void komutEkle(Command* cmd);
+
+	//seçenekler ekrana yazdırılır
+	//LLR-MEN-01 VE REQ1 sağlanmış olur
+	void goruntuleme() const;
+
+	//REQ3 de istenen kullanıcıdan menü seçimi isteği buradan yapılır
+	//direk program çağrıya göre komutu çalıştırır
+	void secim();
+
+	//programın sürekli acik kalmasını sağlayan while(true) döngüsü gibidir
+	//LLR-MEN-07 yi sağlar
+	void akis();
 };
 
 #endif
-
