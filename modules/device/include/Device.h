@@ -13,6 +13,13 @@ public:
     virtual void on() = 0;
     virtual void off() = 0;
 
+    // REQ10 - Prototype
+    virtual Device* clone() const = 0;
+
+    // REQ9 - Failure (stub)
+    virtual bool isFaulty() const { return false; }
+    virtual void reportFailure() {}
+
 protected:
     std::string m_id;
 };
