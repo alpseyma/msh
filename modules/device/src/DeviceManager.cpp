@@ -4,8 +4,8 @@
 DeviceManager::DeviceManager() {}
 
 DeviceManager& DeviceManager::instance() {
-    static DeviceManager instance;
-    return instance;
+    static DeviceManager inst;
+    return inst;
 }
 
 void DeviceManager::addDevice(Device* device) {
@@ -14,20 +14,25 @@ void DeviceManager::addDevice(Device* device) {
 }
 
 void DeviceManager::removeDevice(const std::string& id) {
-    m_devices.erase(id);
+    std::map<std::string, Device*>::iterator it = m_devices.find(id);
+
+    if (it == m_devices.end()) {
+        Logger::instance().warning("Remove failed, device not found: " + id);
+        return;
+    }
+
+    m_devices.erase(it);
     Logger::instance().warning("Device removed: " + id);
 }
 
 void DeviceManager::turnOnAll() {
-    for (std::map<std::string, Device*>::iterator it = m_devices.begin();
-         it != m_devices.end(); ++it) {
+    for (auto it = m_devices.begin(); it != m_devices.end(); ++it) {
         it->second->on();
     }
 }
 
 void DeviceManager::turnOffAll() {
-    for (std::map<std::string, Device*>::iterator it = m_devices.begin();
-         it != m_devices.end(); ++it) {
+    for (auto it = m_devices.begin(); it != m_devices.end(); ++it) {
         it->second->off();
     }
 }
