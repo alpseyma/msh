@@ -5,6 +5,8 @@ enum SystemMode {
     MODE_HOME,
     MODE_AWAY,
     MODE_NIGHT,
+    MODE_PARTY,
+    MODE_CINEMA,
     MODE_EMERGENCY
 };
 
