@@ -8,12 +8,17 @@ void Detector::setNext(Detector* next) {
 }
 
 bool Detector::handle() {
-    if (detect()) {
-        return true;
-    }
-    if (m_next) {
+    bool detected = detect();
+
+    if (detected && m_next) {
+        // detection happened -> continue to action handlers
+        m_next->handle();
+    } else if (!detected && m_next) {
+        // no detection -> try next detector in chain
         return m_next->handle();
     }
-    return false;
+
+    return detected;
 }
+
 

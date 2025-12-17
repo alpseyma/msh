@@ -5,7 +5,7 @@
 
 class RunSecurityCheckCommand : public Command {
 public:
-    void execute();
+    void execute() override;
 };
 
 #endif
