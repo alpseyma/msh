@@ -1,7 +1,10 @@
 add_library(device STATIC
+    src/CameraDevice.cpp
+    src/ConcreteDeviceFactory.cpp
     src/Device.cpp
     src/DeviceManager.cpp
     src/LightDevice.cpp
+    src/TVDevice.cpp
 )
 
 target_include_directories(device PUBLIC
