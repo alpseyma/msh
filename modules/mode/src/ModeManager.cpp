@@ -5,37 +5,54 @@
 ModeManager::ModeManager()
     : m_currentMode(MODE_HOME) {}
 
-ModeManager& ModeManager::instance() {
+ModeManager &ModeManager::instance()
+{
     static ModeManager instance;
     return instance;
 }
 
-void ModeManager::setMode(SystemMode mode) {
+void ModeManager::setMode(SystemMode mode)
+{
     m_currentMode = mode;
 
-    switch (mode) {
-        case MODE_HOME:
-            StateManager::instance().setState("HOME");
-            Logger::instance().info("Mode changed to HOME");
-            break;
+    switch (mode)
+    {
+    case MODE_HOME:
+        StateManager::instance().setState("HOME");
+        Logger::instance().info("Mode changed to HOME");
+        break;
 
-        case MODE_AWAY:
-            StateManager::instance().setState("AWAY");
-            Logger::instance().info("Mode changed to AWAY");
-            break;
+    case MODE_AWAY:
+        StateManager::instance().setState("AWAY");
+        Logger::instance().info("Mode changed to AWAY");
+        break;
 
-        case MODE_NIGHT:
-            StateManager::instance().setState("NIGHT");
-            Logger::instance().info("Mode changed to NIGHT");
-            break;
+    case MODE_NIGHT:
+        StateManager::instance().setState("NIGHT");
+        Logger::instance().info("Mode changed to NIGHT");
+        break;
 
-        case MODE_EMERGENCY:
-            StateManager::instance().setState("EMERGENCY", false);
-            Logger::instance().warning("Mode changed to EMERGENCY");
+    case MODE_PARTY:
+        StateManager::instance().setState("PARTY");
+        Logger::instance().info("Mode changed to PARTY");
+        break;
+
+    case MODE_CINEMA:
+        StateManager::instance().setState("CINEMA");
+        Logger::instance().info("Mode changed to CINEMA");
+        break;
+
+    case MODE_EMERGENCY:
+        StateManager::instance().setState("EMERGENCY", false);
+        Logger::instance().warning("Mode changed to EMERGENCY");
+        break;
+    default:
+            Logger::instance().warning("Unknown mode selected");
             break;
     }
 }
 
-SystemMode ModeManager::getCurrentMode() const {
+SystemMode ModeManager::getCurrentMode() const
+{
     return m_currentMode;
 }
