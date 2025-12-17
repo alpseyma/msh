@@ -1,5 +1,10 @@
 #include "Logger.h"
-
+#include "DetectionManager.h"
+#include "MotionDetector.h"
+#include "SmokeDetector.h"
+#include "AlarmHandler.h"
+#include "LightCycleHandler.h"
+#include "FireCallHandler.h"
 #include "Menu.h"
 #include "SetModeCommand.h"
 #include "TurnOnDevicesCommand.h"
@@ -16,6 +21,20 @@
 
 int main() {
     Logger::instance().info("MSH system started");
+
+    // Detection chain setup (REQ5, REQ14, REQ15, REQ16)
+    MotionDetector motion;
+    SmokeDetector smoke;
+    AlarmHandler alarm;
+    LightCycleHandler lightCycle;
+    FireCallHandler fireCall;
+
+    motion.setNext(&smoke);
+    smoke.setNext(&alarm);
+    alarm.setNext(&lightCycle);
+    lightCycle.setNext(&fireCall);
+
+    DetectionManager::instance().setChain(&motion);
 
     LightDevice light1("LivingRoomLight");
     LightDevice light2("KitchenLight");
