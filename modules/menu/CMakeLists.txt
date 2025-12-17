@@ -7,6 +7,7 @@ add_library(menu STATIC
     src/DisarmSecurityCommand.cpp
     src/RunSecurityCheckCommand.cpp
     src/SecurityStatusCommand.cpp
+    src/ShowManualCommand.cpp
 )
 
 target_include_directories(menu PUBLIC

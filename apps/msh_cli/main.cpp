@@ -19,6 +19,8 @@
 
 #include "ConcreteDeviceFactory.h"
 
+#include "ShowManualCommand.h"
+
 #include <iostream>
 
 int main() {
@@ -31,6 +33,7 @@ int main() {
     LightCycleHandler lightCycle;
     FireCallHandler fireCall;
     ConcreteDeviceFactory factory;
+    ShowManualCommand manualCmd;
 
     motion.setNext(&smoke);
     smoke.setNext(&alarm);
@@ -75,6 +78,7 @@ int main() {
     menu.addCommand(9, "Disarm security", &disarmCmd);
     menu.addCommand(10, "Run security check", &checkCmd);
     menu.addCommand(11, "Security status", &statusCmd);
+    menu.addCommand(12, "Show manual", &manualCmd);
 
     int choice = 0;
     while (choice != -1) {
