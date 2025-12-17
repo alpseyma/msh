@@ -17,6 +17,8 @@
 #include "DeviceManager.h"
 #include "LightDevice.h"
 
+#include "ConcreteDeviceFactory.h"
+
 #include <iostream>
 
 int main() {
@@ -28,6 +30,7 @@ int main() {
     AlarmHandler alarm;
     LightCycleHandler lightCycle;
     FireCallHandler fireCall;
+    ConcreteDeviceFactory factory;
 
     motion.setNext(&smoke);
     smoke.setNext(&alarm);
@@ -35,11 +38,15 @@ int main() {
     lightCycle.setNext(&fireCall);
 
     DetectionManager::instance().setChain(&motion);
+    Device* cam = factory.createCamera("FrontDoorCamera");
+    Device* tv  = factory.createTV("LivingRoomTV");
 
     LightDevice light1("LivingRoomLight");
     LightDevice light2("KitchenLight");
     DeviceManager::instance().addDevice(&light1);
     DeviceManager::instance().addDevice(&light2);
+    DeviceManager::instance().addDevice(cam);
+    DeviceManager::instance().addDevice(tv);
 
     Menu menu;
 
